@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useGetAllCountriesQuery } from "../features/api/apiSlice";
 
 const CountryDetails = () => {
@@ -6,7 +6,11 @@ const CountryDetails = () => {
   const { data } = useGetAllCountriesQuery();
 
   if (!data) {
-    return <h1>Loading...</h1>;
+    return (
+      <h1 className="text-2xl text-white grid place-items-center align-middle">
+        Loading...
+      </h1>
+    );
   }
 
   const selectedCountry = data.find((country) => country.name.common === name);
@@ -30,9 +34,14 @@ const CountryDetails = () => {
 
   return (
     <article className="text-white grid place-items-center grid-cols-3 mt-44">
-      <img className="pl-12 w-2/3" src={flags.svg} />
+      <div>
+        <Link to="/">
+          <h5 className="pl-12 mb-20 text-2xl rounded-md ">Back</h5>
+        </Link>
+        <img className="pl-12 w-4/5" src={flags.svg} />
+      </div>
 
-      <div className="mr-34 text-xl">
+      <div className="mr-34 text-xl ">
         <h2 className="text-2xl font-extrabold mb-8">
           {selectedCountry.name.common}{" "}
         </h2>
@@ -57,10 +66,24 @@ const CountryDetails = () => {
           Top Level Domain <span className="font-light">{tld} </span>
         </h4>
         <h4 className="font-semibold">
-          Currencies:<span className="font-light">{} </span>
+          Currencies:
+          <span className="font-light">
+            {Object.values(currencies)
+              .map((currency) => currency.name)
+              .join(", ")}
+          </span>
         </h4>
         <h4 className="font-semibold">
-          Languages<span className="font-light">{} </span>
+          Languages:{" "}
+          <span className="font-light">
+            {Object.values(languages).join(", ")}{" "}
+          </span>
+        </h4>
+      </div>
+      <div className="col-span-3 grid place-items-center mt-8">
+        <h4 className="font-semibold text-xl text-center text-white">
+          Border Countries:{" "}
+          <span className="bg-dark-blue p-3">{borders.join(" ")} </span>
         </h4>
       </div>
     </article>
